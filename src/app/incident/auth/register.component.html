@@ -1,0 +1,76 @@
+<!--
+  Student ID: 301145757 , 301143620 , 301173877 , 301178658 , 301182897 , 300977318
+  Web App Name: Runtime
+  Description: An Incident Management Application
+-->
+
+<!-- <%- include('../partials/header.ejs') %> -->
+<app-header></app-header>
+
+<!-- Content for the Register page -->
+    <div class="container">
+        <!-- Message Area-->
+        <div class="bg-danger mt-2 p-2 text-center text-white" *ngIf="message != null">
+            {{message}}
+        </div>
+        <!-- <% if(messages.length> 0) {%>
+            <div class="alert alert-danger">
+                <%= messages %>
+            </div>
+        <% } %> -->
+
+        <div class="row">
+            <div class="offset-md-4 col-md-4">
+                <div class="bg-light rounded-3 text-dark mx-1 my-1 px-5 py-5">
+                    <h1 class="text-center">Register New Account</h1>
+
+                    <form novalidate #form="ngForm" (ngSubmit)="register(form)">
+
+                        <div class="form-group mt-3">
+                            <label for="userType">User Type</label>
+                            <select class="form-select" id="userType" name="userType" [(ngModel)]="user.userType" required>
+                                <option value="Regular">Regular</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group mt-3">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter email address"
+                                id="email" [(ngModel)]="user.email" required>
+                        </div>
+                        
+                        <div class="form-group mt-3">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="Enter username"
+                                id="username" [(ngModel)]="user.username" required autofocus>
+                        </div>
+                        
+                        <div class="form-group mt-3">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter password"
+                                id="password" [(ngModel)]="user.password" required>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="password">Re-enter Password</label>
+                            <input type="password" class="form-control" name="password_confirm" placeholder="Enter password"
+                                id="password" [(ngModel)]="confirmPassowrd" required>
+                        </div>
+                        
+                        <div class="form-group text-right mt-3 text-center">
+                            <input type="submit" class="btn btn-success" value="Register">
+                            <span class="mx-1"></span>
+                            <a href="">
+                                <input type="button" class="btn btn-warning" value="Cancel">
+                            </a>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<app-footer></app-footer>
+    <!-- <%- include('../partials/footer.ejs') %> -->

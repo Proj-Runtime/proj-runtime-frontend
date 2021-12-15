@@ -1,0 +1,102 @@
+<!--
+  Student ID: 301145757 , 301143620 , 301173877 , 301178658 , 301182897 , 300977318
+  Web App Name: Runtime
+  Description: An Incident Management Application
+-->
+
+<!-- <%- include ../partials/header.ejs %> -->
+<app-header></app-header>
+
+  <!-- Main Content -->
+<div class="mx-5 my-4 bg-white rounded-3">
+    <main class="text-dark">
+        <div class="mx-3">
+            <h1 class="text-center pt-3 pb-0 mb-0">Incident Dashboard</h1>
+            <div class="text-end" > <!-- *ng-If="typeof username == 'string' && username" -->
+                <!-- <% if(typeof username == 'string' && username){ %> -->
+                
+                <a routerLink="/incident/add" class="btn btn-warning align-self-end" role="button">
+                    <i class="fas fa-plus-circle"></i> 
+                    New Incident
+                </a>
+
+                <span> </span>
+
+                <!-- <% if(typeof username == 'string' && username){ %> -->
+                <button class="btn btn-warning align-self-end" onclick="ShowAndHide()">
+                    <i class="fas fa-times-circle"></i>
+                    Past Incident 
+                </button>
+            </div>
+
+            <div class="table-responsive mt-1">
+                <table class="table table-hover table-sm tablePadding">
+                    <thead class="fontSizeHead">
+                        <!-- Header Row-->
+                        <tr class="table-secondary" >
+                            <th class="text-center">Record ID</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Narrative</th> 
+                            <th class="text-center">Requester Name</th> 
+                            <th class="text-center">Priority</th>
+                            <th class="text-center">Technician</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Created Date</th>
+                            <th class="text-center" colspan="2"></th>
+                        </tr>
+                    </thead>
+                   
+                    <tbody class="fontSizeBody">
+                        <!-- Repeatable Template Row -->
+                        <tr *ngFor="let item of incidentList">
+                            <div *ng-If="item.Status === 'Closed'">
+                                
+                                <td class="text-center hide" style="display:none">{{ item.RecordNumber }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.Description }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.Narrative }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.RequesterName }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.Priority }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.Technician }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.Status }}</td>
+                                <td class="text-center hide" style="display:none">{{ item.CreatedDate }}</td>
+                                
+                                <td class="text-center hide" style="display:none">
+                                    <a routerLink="/incident/edit/{{ item._id }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-pencil-alt"></i></a>
+                                </td>
+                                <td class="text-center hide" style="display:none">
+                                    <a routerLink="/incident/delete/{{ item._id }}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i></a>
+                                </td>
+                                
+                            </div>
+                            <div *ng-If="item.Status !== 'Closed'">
+                                <td class="text-center">{{ item.RecordNumber }}</td>
+                                <td class="text-center">{{ item.Description }}</td>
+                                <td class="text-center">{{ item.Narrative }}</td>
+                                <td class="text-center">{{ item.RequesterName }}</td>
+                                <td class="text-center">{{ item.Priority }}</td>
+                                <td class="text-center">{{ item.Technician }}</td>
+                                <td class="text-center">{{ item.Status }}</td>
+                                <td class="text-center">{{ item.CreatedDate }}</td>
+                                
+                                <td class="text-center">
+                                    <button [routerLink]="['/incident/edit/', item._id]" class="btn bg-primary btn-primary btn-sm">
+                                    <i class="fas fa-pencil-alt"></i></button>
+                                </td>
+                                <td class="text-center">
+                                    <a (click)="deleteMethod(item._id)" class="btn bg-danger btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<app-footer></app-footer>
+  
+<!-- <%- include ../partials/footer.ejs %> -->

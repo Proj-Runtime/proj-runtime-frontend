@@ -1,0 +1,347 @@
+<!--
+  Student ID: 301145757 , 301143620 , 301173877 , 301178658 , 301182897 , 300977318
+  Web App Name: Runtime
+  Description: An Incident Management Application
+-->
+
+<%- include ../partials/header.ejs %>
+
+<!-- Content for the Add_Edit page -->
+<div class="container mb-4">
+    <div class="row">
+        <div class="offset-md-3 col-md-6">
+            <!-- <h1 class="text-center pb-3"><%= title %></h1> -->
+            <h1>{{editing ? "Edit" : "Add New"}} Incident Report</h1>
+
+            <form novalidate #form="ngForm" (ngSubmit)="save(form)">
+                <div class="form-group">
+                    <label for="RecordNumbertextField" class="labelList">Record Number</label>
+                    <input type="text" class="form-control" id="RecordNumbertextField" name="RecordNumber"
+                    [(ngModel)]="incident.RecordNumber" disabled readonly>
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="hidden"
+                        name="id"
+                        [(ngModel)]="incident._id"
+                    >
+
+                    <label for="requestTextField">Requester Name</label>
+                    <div ng-if="editing">
+                        <input type="text" class="form-control"
+                        id="requestTextField"
+                        name="RequesterName" 
+                        [(ngModel)]="incident.RequesterName"
+                        disabled readonly>
+                    </div>
+                    <div ng-if="!editing">
+                        <input type="text" class="form-control"
+                        id="requestTextField"
+                        placeholder="First and last name."
+                        name="RequesterName" 
+                        [(ngModel)]="incident.RequesterName"
+                        required>
+                    </div>            
+                </div>
+
+                <div class="form-group mt-3">
+                    <div ng-if="editing">
+                        <label for="statTextField">Status</label>
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <input type="text" class="form-control" id="statTextField" name="Status"
+                            [(ngModel)]="incident.Status" disabled readonly>
+                        </div>
+                        <div *ng-If="inventory.Status === 'New'">
+                            <select class="form-select" id="statTextField" name="Status" required>
+                                <option [(ngModel)]="incident.Status" selected></option>
+                                <option [(ngModel)]="Assigned">Assigned</option>
+                                <option [(ngModel)]="In Progress">In Progress</option>
+                                <option [(ngModel)]="On Hold">On Hold</option>
+                                <option [(ngModel)]="Resolved">Resolved</option>
+                                <option [(ngModel)]="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div *ng-If="inventory.Status === 'Assigned'">
+                            <select class="form-select" id="statTextField" name="Status" required>
+                                <option [(ngModel)]="incident.Status" selected>></option>
+                                <option [(ngModel)]="In Progress">In Progress</option>
+                                <option [(ngModel)]="On Hold">On Hold</option>
+                                <option [(ngModel)]="Resolved">Resolved</option>
+                                <option [(ngModel)]="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div *ng-If="inventory.Status === 'In Progress'">
+                            <select class="form-select" id="statTextField" name="Status" required>
+                                <option [(ngModel)]="incident.Status" selected></option>
+                                <option [(ngModel)]="Assigned">Assigned</option>
+                                <option [(ngModel)]="On Hold">On Hold</option>
+                                <option [(ngModel)]="Resolved">Resolved</option>
+                                <option [(ngModel)]="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div *ng-If="inventory.Status === 'On Hold'">
+                            <select class="form-select" id="statTextField" name="Status" required>
+                                <option [(ngModel)]="incident.Status" selected></option>
+                                <option [(ngModel)]="Assigned">Assigned</option>
+                                <option [(ngModel)]="In Progress">In Progress</option>
+                                <option [(ngModel)]="Resolved">Resolved</option>
+                                <option [(ngModel)]="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div *ng-If="inventory.Status === 'Resolved'">
+                            <select class="form-select" id="statTextField" name="Status" required>
+                                <option [(ngModel)]="incident.Status" selected></option>
+                                <option [(ngModel)]="Assigned">Assigned</option>
+                                <option [(ngModel)]="In Progress">In Progress</option>
+                                <option [(ngModel)]="On Hold">On Hold</option>
+                                <option [(ngModel)]="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <select class="form-select" id="statTextField" name="Status">
+                                <option [(ngModel)]="incident.Status" selected></option>
+                                <option [(ngModel)]="Assigned">Assigned</option>
+                                <option [(ngModel)]="In Progress">In Progress</option>
+                                <option [(ngModel)]="On Hold">On Hold</option>
+                                <option [(ngModel)]="Resolved">Resolved</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-if="!editing">
+                        <label for="statTextField">Status</label>
+                        <input type="text" class="form-control"
+                        id="statTextField"
+                        name="Status" 
+                        [(ngModel)]="New"
+                        disabled readonly>
+                    </div>    
+                </div>
+
+                <div class="form-group mt-3" id="showResolutionField" style="display:none;">
+                    <label for="rsltnTextField" class="col-lg-2 control-label">Resolution</label>
+                    <textarea class="form-control" id="rsltnTextField" rows="3" name="Resolution" [(ngModel)]="incident.Resolution" placeholder="Incident resolution field must be entered before this ticket can be officially closed."></textarea>  
+                </div>
+                
+                <div class="form-group mt-3">
+                    <label for="descTextField">Description</label>
+                    <div ng-if="editing">
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <input type="text" class="form-control" id="descTextField" name="Description"
+                            [(ngModel)]="incident.Description" disabled readonly>
+                        </div>
+                        <div *ng-If="inventory.Status !== 'Closed'">
+                            <input type="text" class="form-control"
+                            id="descTextField"
+                            placeholder="Enter the incident description."
+                            name="Description" 
+                            [(ngModel)]="incident.Description"
+                            required>            
+                        </div>
+                    </div>
+                    <div ng-if="!editing">
+                        <input type="text" class="form-control"
+                        id="descTextField"
+                        placeholder="Enter the incident description."
+                        name="Description" 
+                        [(ngModel)]="incident.Description"
+                        required>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-3">
+                    <div ng-if="editing">
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <label for="narTextField" class="col-lg-2 control-label">Narrative</label>
+                            <textarea class="form-control" id="narTextField" rows="3" name="Narrative" [(ngModel)]="incident.Narrative" disabled readonly></textarea>    
+                        </div>
+                        <div *ng-If="inventory.Status !== 'Closed'">
+                            <label for="narTextField" class="col-lg-2 control-label">Narrative</label>
+                            <textarea class="form-control" id="narTextField" rows="3" name="Narrative" [(ngModel)]="incident.Narrative" required></textarea>    
+                        </div>
+                    </div>
+                    <div ng-if="!editing">
+                        <label for="narTextField" class="col-lg-2 control-label">Narrative</label>
+                        <textarea class="form-control" id="narTextField" rows="3" placeholder="Enter the incident narrative." name="Narrative" required></textarea>
+                    </div>    
+                </div>
+                
+                <div class="form-group mt-3">
+                    <div ng-if="editing">
+                        <label for="priorityTextField">Priority</label>
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <input type="text" class="form-control" id="priorityTextField" name="Priority"
+                            [(ngModel)]="incident.Priority" disabled readonly>
+                        </div>
+                        <div *ng-If="inventory.Status !== 'Closed'">
+                            <div *ng-If="inventory.Priority === 'Low'">
+                                <select class="form-select" id="priorityTextField" name="Priority" required>
+                                    <option [(ngModel)]="incident.Priority" selected></option>
+                                    <option [(ngModel)]="Medium">Medium</option>
+                                    <option [(ngModel)]="High">High</option>
+                                </select>
+                            </div>
+                            <div *ng-If="inventory.Priority === 'Medium'">
+                                <select class="form-select" id="priorityTextField" name="Priority" required>
+                                    <option [(ngModel)]="incident.Priority" selected></option>
+                                    <option [(ngModel)]="Low">Low</option>
+                                    <option [(ngModel)]="High">High</option>
+                                </select>
+                            </div>
+                            <div *ng-If="inventory.Priority === 'High'">
+                                <select class="form-select" id="priorityTextField" name="Priority" required>
+                                    <option [(ngModel)]="incident.Priority" selected></option>
+                                    <option [(ngModel)]="Low">Low</option>
+                                    <option [(ngModel)]="Medium">Medium</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>    
+                    <div ng-if="!editing">
+                        <label for="priorityTextField">Priority</label>
+                        <select class="form-select" id="priorityTextField" name="Priority" required>
+                            <option [(ngModel)]="Low" selected>--Open to select priority--</option>
+                            <option [(ngModel)]="Low">Low</option>
+                            <option [(ngModel)]="Medium">Medium</option>
+                            <option [(ngModel)]="High">High</option>
+                        </select>
+                    </div>   
+                </div>
+                
+                <div class="form-group mt-3">
+                    <div ng-if="editing">
+                        <label for="techTextField">Technician</label>
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <input type="text" class="form-control" id="techTextField" name="Technician"
+                            [(ngModel)]="incident.Technician" disabled readonly>
+                        </div>
+                        <div *ng-If="inventory.Status !== 'Closed'">
+                            <div *ng-If="inventory.Technician === 'Unassigned'">
+                                <select class="form-select" id="techTextField" name="Technician" required>
+                                    <option [(ngModel)]="incident.Technician" selected></option>
+                                    <option [(ngModel)]="Lana Reyes">Lana Reyes</option>
+                                    <option [(ngModel)]="James Archer">James Archer</option>
+                                    <option [(ngModel)]="Aparna Ragavan">Aparna Ragavan</option>
+                                    <option [(ngModel)]="Robert Lee">Robert Lee</option>
+                                    <option [(ngModel)]="Stephen Nelson">Stephen Nelson</option>
+                                </select>
+                            </div>
+                            <div *ng-If="inventory.Technician === 'Lana Reyes'">
+                                <select class="form-select" id="techTextField" name="Technician" required>
+                                    <option [(ngModel)]="<incident.Technician" selected></option>
+                                    <option [(ngModel)]="James Archer">James Archer</option>
+                                    <option [(ngModel)]="Aparna Ragavan">Aparna Ragavan</option>
+                                    <option [(ngModel)]="Robert Lee">Robert Lee</option>
+                                    <option [(ngModel)]="Stephen Nelson">Stephen Nelson</option>
+                                </select>
+                            </div>
+                            <div *ng-If="inventory.Technician === 'James Archer'">
+                                <select class="form-select" id="techTextField" name="Technician" required>
+                                    <option [(ngModel)]="incident.Technician" selected></option>
+                                    <option [(ngModel)]="Lana Reyes">Lana Reyes</option>
+                                    <option [(ngModel)]="Aparna Ragavan">Aparna Ragavan</option>
+                                    <option [(ngModel)]="Robert Lee">Robert Lee</option>
+                                    <option [(ngModel)]="Stephen Nelson">Stephen Nelson</option>
+                                </select>
+                            </div>
+                            <div *ng-If="inventory.Technician === 'Aparna Ragavan'">
+                                <select class="form-select" id="techTextField" name="Technician" required>
+                                    <option [(ngModel)]="incident.Technician" selected></option>
+                                    <option [(ngModel)]="Lana Reyes">Lana Reyes</option>
+                                    <option [(ngModel)]="James Archer">James Archer</option>
+                                    <option [(ngModel)]="Robert Lee">Robert Lee</option>
+                                    <option [(ngModel)]="Stephen Nelson">Stephen Nelson</option>
+                                </select>
+                            </div>
+                                <div *ng-If="inventory.Technician === 'Robert Lee'">
+                                <select class="form-select" id="techTextField" name="Technician" required>
+                                    <option [(ngModel)]="<incident.Technician" selected></option>
+                                    <option [(ngModel)]="Lana Reyes">Lana Reyes</option>
+                                    <option [(ngModel)]="James Archer">James Archer</option>
+                                    <option [(ngModel)]="Aparna Ragavan">Aparna Ragavan</option>
+                                    <option [(ngModel)]="Stephen Nelson">Stephen Nelson</option>
+                                </select>
+                            </div>
+                            <div *ng-If="inventory.Technician === 'Stephen Nelson'">
+                                <select class="form-select" id="techTextField" name="Technician" required>
+                                    <option [(ngModel)]="incident.Technician" selected></option>
+                                    <option [(ngModel)]="Lana Reyes">Lana Reyes</option>
+                                    <option [(ngModel)]="James Archer">James Archer</option>
+                                    <option [(ngModel)]="Aparna Ragavan">Aparna Ragavan</option>
+                                    <option [(ngModel)]="Robert Lee">Robert Lee</option>
+                                </select>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div ng-if="!editing">
+                        <label for="priorityTextField">Priority</label>
+                        <select class="form-select" id="techTextField" name="Technician" required>
+                            <option [(ngModel)]="Unassigned" selected>--Open to select a technician--</option>
+                            <option [(ngModel)]="Lana Reyes">Lana Reyes</option>
+                            <option [(ngModel)]="James Archer">James Archer</option>
+                            <option [(ngModel)]="Aparna Ragavan">Aparna Ragavan</option>
+                            <option [(ngModel)]="Robert Lee">Robert Lee</option>
+                            <option [(ngModel)]="Stephen Nelson">Stephen Nelson</option>
+                        </select>
+                    </div>       
+                </div>
+                
+                <div class="form-group mt-3">
+                    <label for="dateTextField">Date</label>
+                    <input type="text" class="form-control"
+                        id="dateTextField"
+                        name="CreatedDate" 
+                        [(ngModel)]="incident.CreatedDate"
+                        disabled readonly>
+                </div>
+                
+                <div class="mt-3 mb-5 pb-5 text-center">
+                    <div ng-if="editing">
+                        
+                        <div *ng-If="inventory.Status === 'Closed'">
+                            <a href="/incident/audit" class="btn btn-success">
+                                <i class="fas fa-external-link-alt"></i>
+                                Audit Trail
+                            </a>
+                            
+                            <a href="/incident/list" class="btn btn-warning">
+                                <i class="fas fa-undo"></i> 
+                                Cancel
+                            </a>
+                        </div>
+
+                        <div *ng-If="inventory.Status !== 'Closed'">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-edit"></i> 
+                                Submit
+                            </button>
+    
+                            <a href="/incident/audit/" class="btn btn-success">
+                                <i class="fas fa-external-link-alt"></i>
+                                Audit Trail
+                            </a>
+                            
+                            <a href="/incident/list" class="btn btn-warning">
+                                <i class="fas fa-undo"></i> 
+                                Cancel
+                            </a>
+                        </div>
+
+                    </div>
+                    <div ng-if="!editing">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-edit"></i> 
+                            Submit
+                        </button>
+                        
+                        <a routerLink="/incident/list" class="btn btn-warning">
+                            <i class="fas fa-undo"></i> 
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include ../partials/footer.ejs %>
